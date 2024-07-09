@@ -54,17 +54,6 @@ bool is_gr_ajout (Rule* ptr_r, int i, int pt, int* ptr_j){ //test en O(n)
 	ptr_r->pts[i] = pt;
 	return possible;}
 
-/*
-int minimum(int n1, int n2){
-	if (n1 < n2) return n1;
-	return n2;
-}
-
-int maximum(int n1, int n2){
-	if (n1 > n2) return n1;
-	return n2;
-}*/
-
 bool ogr(Rule* regle, int* mins, int i){
 	//renvoie si la règle telle que les i premières cases sont déjà remplies peut être complétée en une règle de golomb et modifie en place la règle pour qu'elle contienne une règle de Golomb optimale
 	//mins correspond à un tableau qui contient, pour tout k < regle->size, la taille d'une règle de golomb minimale d'ordre k
@@ -115,7 +104,6 @@ void print_ogr(int n){
 		Rule regle = create_rule (k, max);
 		ogr(&regle, mins, 0);
 		print_regle(regle);
-		//printf("taille du tableau: %d par rapport à %d \n\n", max, 1<<(k - 1));
 		mins[k] = regle.pts[0];
 		max = 2*regle.pts[0] + 1; //on peut créer une règle de golomb en ajoutant une garduation à 2*graduation_maximale + 1
 		clear_rule(regle);
@@ -126,7 +114,6 @@ void print_ogr(int n){
 	double temps = ((double) (end - start))/CLOCKS_PER_SEC;
 	printf("temps nécessaire pour l'ordre %d : %f s \n", n, temps);
 	print_regle(regle);
-	//printf("taille du tableau: %d\n par rapport à %d \n", max, 1<<(n - 1));
 	clear_rule(regle);
 	free(mins);
 }
