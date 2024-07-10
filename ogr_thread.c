@@ -1,5 +1,3 @@
-#define _GNU_SOURCE
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -11,8 +9,8 @@
 
 //pts indique les graduations, dist garde en mémoire les distances entre les différents points
 typedef struct rule {int* pts;
-					 int size;
-					 bool* dist;} Rule;//règle construite à l'envers
+	int size;
+	bool* dist;} Rule;//règle construite à l'envers
 
 
 Rule create_rule (int n, int max){
@@ -102,23 +100,12 @@ static void * ogr_aux(void * argus){
 	
 
 Rule regle_thread(int k, int* mins, int max){
-	Rule regle1 = create_rule(k, max);
+	Rule regle1 = create_rule(k, max); // le calcul des règles est partagé entre 2 fils
 	Rule regle2 = create_rule(k, max);
 	bool found1 = false;
 	bool found2 = false;
-	
 	pthread_t fil1;
 	pthread_t fil2;
-	cpu_set_t cpuset1;
-	cpu_set_t cpuset2;
-	CPU_ZERO(&cpuset1);
-	CPU_ZERO(&cpuset2);
-	for (size_t j = 0; j < 4; j++) {
-		CPU_SET(j, &cpuset1);
-		CPU_SET(j + 4, &cpuset2);
-	}
-	pthread_setaffinity_np(fil1, sizeof(cpuset1), &cpuset1);
-	pthread_setaffinity_np(fil1, sizeof(cpuset2), &cpuset2);
 	
 	for (int i = mins[k - 1] + 2; !found1 && !found2; i++){
 		regle1.pts[0] = i;
